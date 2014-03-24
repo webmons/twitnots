@@ -1,0 +1,14 @@
+{
+    "name": "Twitnots",
+    "version": "0.0.1",
+    "description": "Real Time Tweets",
+    "dependencies": {
+        "socket.io": "latest",
+        "express": "latest",
+        "jade": "latest",
+        "user-stream": "latest",
+        "mongodb": "latest",
+        "monk": "latest"
+    },
+    "author": "Dave Cremins"
+}
