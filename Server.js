@@ -1,4 +1,5 @@
 var Stream = require('user-stream');
+var trackingTags = require('./TrackTags.json');
 
 var express = require('express')
   , http = require('http')
@@ -18,25 +19,33 @@ app.get("/", function(req, res){
 app.use(express.static(__dirname + '/public')); 
 var io = require('socket.io').listen(app.listen(port));
 
-var stream = new Stream({
-   consumer_key: process.env.TWITTER_CONSUMER_KEY,
-   consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
-   access_token_key: process.env.TWITTER_ACCESS_TOKEN_KEY,
-   access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET
-});
-
-// Default to #wtf
-var params = {
-   track: '#wtf'
-};
-   
-//create stream
-stream.stream(params.track);
+var stream = CreateStream(trackingTags.toString());
 
 io.sockets.on('connection', function (socket) {
-   console.log("Connection from: " + socket.clientId);
+   console.log("Connection from: " + socket.id);
    // Listen for the data event of the stream and broadcast to connected clients
    stream.on('data', function (json) {    
       socket.emit('newTweet', { tweetJSON: json });      
    });
 });
+
+function CreateStream(tracking){
+   console.log("Tracking: " + tracking);
+   
+   var stream = new Stream({
+      consumer_key: process.env.TWITTER_CONSUMER_KEY,
+      consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
+      access_token_key: process.env.TWITTER_ACCESS_TOKEN_KEY,
+      access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET
+   });
+
+   var params = {
+      track: tracking
+   };
+   
+   stream.stream(params);
+   
+   console.log("Streaming started.");
+   
+   return stream;
+}
