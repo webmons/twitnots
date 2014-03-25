@@ -1,5 +1,5 @@
 var Stream = require('user-stream');
-var trackingTags = require('./TrackTags.json');
+var track = require('./TagsToTrack.json');
 
 var express = require('express')
   , http = require('http')
@@ -19,7 +19,7 @@ app.get("/", function(req, res){
 app.use(express.static(__dirname + '/public')); 
 var io = require('socket.io').listen(app.listen(port));
 
-var stream = CreateStream(trackingTags.toString());
+var stream = CreateStream(track.Tags.toString());
 
 io.sockets.on('connection', function (socket) {
    console.log("Connection from: " + socket.id);
