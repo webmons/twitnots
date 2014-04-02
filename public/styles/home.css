@@ -1,0 +1,62 @@
+#ball {
+	height: 42px;
+	width: 44px;
+	animation: rotateBall 1.5s linear infinite;
+	-webkit-animation: rotateBall 1.5s linear infinite; /* Safari and Chrome */
+	margin: auto;
+	background-image: url('../images/soccerball.jpg')
+}
+
+@keyframes rotateBall {
+	from { transform: rotate(0deg);}
+	to {transform: rotate(360deg);}
+}
+
+@-webkit-keyframes rotateBall {
+	from{-webkit-transform: rotate(0deg);}
+	to{-webkit-transform: rotate(360deg);}
+}
+
+#mainContainer{
+   margin-top: 20px;
+   margin-left: auto;
+   margin-right: auto;
+   display: block;
+   overflow: hidden;
+   width: 1200px;
+}
+
+#mainContainer .tweetContainer {
+   float: left;
+   padding: 8px 8px 10px 8px;
+   margin: 2px;
+   border-radius: 1px;
+   width: 175px;
+   height: 125px;
+   background-color: white;
+   border: 1px #ddeef6 solid;
+}
+
+#mainContainer .tweetContainerLarge {			   
+   width: 371px;			   
+}
+
+#mainContainer .stage{
+	-moz-box-shadow: 0px 0px 7px 0px #AED3FC;
+	-webkit-box-shadow: 0px 0px 7px 0px #AED3FC;
+	box-shadow: 0px 0px 7px 0px #AED3FC;
+}
+
+#mainContainer .tweetContainer:hover {
+	-moz-box-shadow: 0px 0px 5px 0px #AED3FC;
+	-webkit-box-shadow: 0px 0px 5px 0px #AED3FC;
+	box-shadow: 0px 0px 5px 0px #AED3FC;
+	background-color: #cbe6f2;
+	cursor: pointer;
+}
+
+.tweetImg {
+   vertical-align: middle;
+   margin: 10px;
+   border-radius: 25px;
+}
