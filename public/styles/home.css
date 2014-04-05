@@ -17,6 +17,17 @@
 	to{-webkit-transform: rotate(360deg);}
 }
 
+#viewTweet{
+	-webkit-transition: -webkit-transform 0.8s,opacity 0.8s,background 0.8s,width 0.8s,height 0.8s,font-size 0.8s;
+	-o-transition-property: width,height,-o-transform,background,font-size,opacity;
+	-o-transition-duration: 0.8s,0.8s,0.8s,0.8s,0.8s,0.8s;
+	-moz-transition-property: width,height,-o-transform,background,font-size,opacity;
+	-moz-transition-duration: 0.8s,0.8s,0.8s,0.8s,0.8s,0.8s;
+	transition-property: width,height,transform,background,font-size,opacity;
+	transition-duration: 0.8s,0.8s,0.8s,0.8s,0.8s,0.8s;
+}
+
+
 #mainContainer{
    margin-top: 20px;
    margin-left: auto;
@@ -35,6 +46,13 @@
    height: 125px;
    background-color: white;
    border: 1px #ddeef6 solid;
+   -webkit-transition: -webkit-transform 0.8s,opacity 0.8s,background 0.8s,width 0.8s,height 0.8s,font-size 0.8s;
+	-o-transition-property: width,height,-o-transform,background,font-size,opacity;
+	-o-transition-duration: 0.8s,0.8s,0.8s,0.8s,0.8s,0.8s;
+	-moz-transition-property: width,height,-o-transform,background,font-size,opacity;
+	-moz-transition-duration: 0.8s,0.8s,0.8s,0.8s,0.8s,0.8s;
+	transition-property: width,height,transform,background,font-size,opacity;
+	transition-duration: 0.8s,0.8s,0.8s,0.8s,0.8s,0.8s;
 }
 
 #mainContainer .tweetContainerLarge {			   
@@ -59,4 +77,35 @@
    vertical-align: middle;
    margin: 10px;
    border-radius: 25px;
+}
+
+#animatedTweet
+{
+	display:none;
+	position: relative;
+	padding: 8px 8px 10px 8px;
+	width:275px;
+	height:200px;
+	margin-top: -24%;
+	color:#ffffff;
+	font-weight:bold;
+	font-size:16px;
+	border-radius: 5px;
+	z-index: 999;
+}
+
+@-webkit-keyframes animated_div{
+	0% {-webkit-transform: rotate(0deg);}
+	3%	{-webkit-transform: rotate(-20deg);left:0px;}
+	8%	{-webkit-transform: rotate(20deg);left:0px;}
+	12% {-webkit-transform: rotate(-20deg);left:0px;}
+	16% {-webkit-transform: rotate(20deg);left:0px;}
+	20% {-webkit-transform: scale(1.2), left:0px;}
+	21% {-webkit-transform: scale(1), left:0px;}
+	22% {-webkit-transform: scale(1.2), left:0px;}
+	25% {-webkit-transform: rotate(0deg);left:0px;}
+	50% {-webkit-transform: rotate(0deg);left:540px;}
+	55% {-webkit-transform: rotate(0deg);left:540px;}
+	70% {-webkit-transform: rotate(0deg);left:540px;background:#1ec7e6;}
+	100% {-webkit-transform: rotate(-360deg);left:0px;}
 }
