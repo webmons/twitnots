@@ -1,3 +1,4 @@
+var position = 1;
 $(document).ready(function () {   
    SetupTweetBoxClick();
    var socket = SetupSocket();
@@ -11,6 +12,7 @@ function SetupSocket(){
       if(data.tweetJSON) {                    
          console.log(data.tweetJSON);
          console.log("Size of tweet: " + JSON.stringify(data.tweetJSON).length);
+         SetTweetElement(data.tweetJSON);
       } 
       else {
          console.log("Problem occured for newTweet event.");
@@ -31,10 +33,9 @@ function SetupTweetBoxClick(){
 	});
 }
 
-function CreateTweetElement(tweetJSON){
-   // Create div element
-   var tweetDiv = $(document.createElement("div"));
-   tweetDiv.addClass("tweetContainer");
+function SetTweetElement(tweetJSON){
+   // get div element
+   var tweetDiv = $("div[data-position='" + position + "']");
    
    // Parse tweet data and set html
    var tweetData = tweetJSON.text;   
@@ -48,7 +49,5 @@ function CreateTweetElement(tweetJSON){
       tweetImg.prependTo(tweetDiv);
    }
    
-   // Show tweet
-   tweetDiv.prependTo('#mainContainer').fadeIn("slow");
-   $("#mainContainer>div:gt(" + maxDivCount + ")").remove();
+   position = position === 11 ? 1 : position + 1;
 }
