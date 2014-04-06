@@ -9,7 +9,8 @@ function SetupSocket(){
    socket = io.connect('/');    
  
    socket.on('newTweet', function (data) {
-      if(data.tweetJSON) {                    
+      if(data.tweetJSON) {
+      	SpinBall();                    
          console.log(data.tweetJSON);
          console.log("Size of tweet: " + JSON.stringify(data.tweetJSON).length);
          SetTweetElement(data.tweetJSON);
@@ -20,6 +21,10 @@ function SetupSocket(){
    });
    
    return socket;   
+}
+
+function SpinBall(){
+	$("#ball").css("-webkit-animation", "rotateBall 1s linear infinite");
 }
 
 function SetupTweetBoxClick(){
@@ -36,6 +41,7 @@ function SetupTweetBoxClick(){
 function SetTweetElement(tweetJSON){
    // get div element
    var tweetDiv = $("div[data-position='" + position + "']");
+   tweetDiv.hide();
    
    // Parse tweet data and set html
    var tweetData = tweetJSON.text;   
@@ -50,4 +56,7 @@ function SetTweetElement(tweetJSON){
    }
    
    position = position === 11 ? 1 : position + 1;
+   tweetDiv.fadeIn(800, function () {
+   	$("#ball").css("-webkit-animation", "");  
+   });
 }
