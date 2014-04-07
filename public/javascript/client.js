@@ -83,13 +83,16 @@ function SetTweetElement(tweetJSON, stopAnimation, showNewTweetAnimation){
 	   var tweetData = tweetJSON.text;   
 	   var tweetInfo = tweetDiv.html(tweetData.parseURL().parseUsername().parseHashtag());
 	   
-	   // Prepend image
-	   if(tweetJSON.user.profile_image_url){
-	      var tweetImg = $(document.createElement("img"));
-	      tweetImg.addClass("tweetImg");
-	      tweetImg.attr('src', tweetJSON.user.profile_image_url);
-	      tweetImg.prependTo(tweetDiv);
-	   }
+        // Set background of div
+        if (tweetJSON.user.profile_banner_url) {
+            //var tweetImg = $(document.createElement("img"));
+            //tweetImg.addClass("tweetImg");
+            $(tweetDiv).css('background', "url(" + tweetJSON.user.profile_banner_url + ") no-repeat");
+            $(tweetDiv).css('background-size', "cover");
+            //$(tweetDiv).css('background-repeat', 'no-repeat');
+            //tweetImg.attr('src', tweetJSON.user.profile_image_url);
+            //tweetImg.prependTo(tweetDiv);
+        }
 	   
 	   stopAnimation();
 	   

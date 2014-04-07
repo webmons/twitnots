@@ -45,7 +45,7 @@
    border-radius: 1px;
    width: 175px;
    height: 150px;
-   background-color: white;
+   color: white;
    border: 1px #ddeef6 solid;
    -webkit-transition: -webkit-transform 0.8s,opacity 0.8s,background 0.8s,width 0.8s,height 0.8s,font-size 0.8s;
 	-o-transition-property: width,height,-o-transform,background,font-size,opacity;
