@@ -1,8 +1,6 @@
 #ball {
 	height: 42px;
 	width: 44px;
-	/*animation: rotateBall 1s linear infinite;
-	-webkit-animation: rotateBall 1s linear infinite;*/ /* Safari and Chrome */
 	margin: auto;
 	background-image: url('../images/soccerball.jpg')
 }
@@ -16,17 +14,6 @@
 	from{-webkit-transform: rotate(0deg);}
 	to{-webkit-transform: rotate(360deg);}
 }
-
-#viewTweet{
-	-webkit-transition: -webkit-transform 0.8s,opacity 0.8s,background 0.8s,width 0.8s,height 0.8s,font-size 0.8s;
-	-o-transition-property: width,height,-o-transform,background,font-size,opacity;
-	-o-transition-duration: 0.8s,0.8s,0.8s,0.8s,0.8s,0.8s;
-	-moz-transition-property: width,height,-o-transform,background,font-size,opacity;
-	-moz-transition-duration: 0.8s,0.8s,0.8s,0.8s,0.8s,0.8s;
-	transition-property: width,height,transform,background,font-size,opacity;
-	transition-duration: 0.8s,0.8s,0.8s,0.8s,0.8s,0.8s;
-}
-
 
 #mainContainer{
    margin-top: 20px;
@@ -49,13 +36,13 @@
    color: white;
    font-size: .8em;
    border: 1px #ddeef6 solid;
-   -webkit-transition: -webkit-transform 0.8s,opacity 0.8s,background 0.8s,width 0.8s,height 0.8s,font-size 0.8s;
-	-o-transition-property: width,height,-o-transform,background,font-size,opacity;
-	-o-transition-duration: 0.8s,0.8s,0.8s,0.8s,0.8s,0.8s;
-	-moz-transition-property: width,height,-o-transform,background,font-size,opacity;
-	-moz-transition-duration: 0.8s,0.8s,0.8s,0.8s,0.8s,0.8s;
-	transition-property: width,height,transform,background,font-size,opacity;
-	transition-duration: 0.8s,0.8s,0.8s,0.8s,0.8s,0.8s;
+   -webkit-transition: -webkit-transform 0.8s, background 0.8s, width 0.8s, height 0.8s, font-size 0.8s;
+	-o-transition-property: width,height,-o-transform,background,font-size;
+	-o-transition-duration: 0.8s,0.8s,0.8s,0.8s,0.8s;
+	-moz-transition-property: width,height,-o-transform,background,font-size;
+	-moz-transition-duration: 0.8s,0.8s,0.8s,0.8s,0.8s;
+	transition-property: width,height,transform,background,font-size;
+	transition-duration: 0.8s,0.8s,0.8s,0.8s,0.8s;
 }
 
 a{
@@ -97,7 +84,6 @@ a:visited{
 	-moz-box-shadow: 0px 0px 5px 0px #AED3FC;
 	-webkit-box-shadow: 0px 0px 5px 0px #AED3FC;
 	box-shadow: 0px 0px 5px 0px #AED3FC;
-	background-color: #cbe6f2;
 	cursor: pointer;
 }
 
