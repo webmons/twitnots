@@ -35,6 +35,7 @@
    display: block;
    overflow: hidden;
    width: 1200px;
+   font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
 }
 
 #mainContainer .tweetContainer {

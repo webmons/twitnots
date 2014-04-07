@@ -1,8 +1,11 @@
 var position = 1;
+var tweetQueue = new Array();
+var timeoutId = null;
+var timeoutPeriod = 5000;
+
 $(document).ready(function () {   
-   SetupTweetBoxClick();
-   var socket = SetupSocket();
-   
+	var socket = SetupSocket();
+   ShowTweetsPerInterval();
 });
 
 function SetupSocket(){
@@ -10,10 +13,10 @@ function SetupSocket(){
  
    socket.on('newTweet', function (data) {
       if(data.tweetJSON) {
-      	SpinBall();                    
-         console.log(data.tweetJSON);
+      	console.log(data.tweetJSON);
          console.log("Size of tweet: " + JSON.stringify(data.tweetJSON).length);
-         SetTweetElement(data.tweetJSON);
+         // Add to queue
+         tweetQueue.push(data);         
       } 
       else {
          console.log("Problem occured for newTweet event.");
@@ -23,8 +26,36 @@ function SetupSocket(){
    return socket;   
 }
 
+function ShowTweetsPerInterval()
+{
+   ProcessTweetQueue();
+   timeoutId = setTimeout(
+   	function(){
+      	ShowTweetsPerInterval();
+   	}, 
+   	timeoutPeriod
+	);	
+}
+
+function ProcessTweetQueue(){
+   // Get tweet data from queue
+   var tweetData = tweetQueue.shift();
+   
+   if(tweetData)
+   {      
+      SpinBall();
+      SetTweetElement(tweetData.tweetJSON, StopBall, ShowTweetAgain);
+   }
+   
+   console.log("Tweet data processed, queue size after shift: " + tweetQueue.length);
+}
+
 function SpinBall(){
 	$("#ball").css("-webkit-animation", "rotateBall 1s linear infinite");
+}
+
+function StopBall(){
+	$("#ball").css("-webkit-animation", "");
 }
 
 function SetupTweetBoxClick(){
@@ -38,25 +69,31 @@ function SetupTweetBoxClick(){
 	});
 }
 
-function SetTweetElement(tweetJSON){
+function ShowTweetAgain(tweetContainer){
+	tweetContainer.animate({opacity: 1}, 2500);
+}
+
+function SetTweetElement(tweetJSON, stopAnimation, showNewTweetAnimation){
    // get div element
    var tweetDiv = $("div[data-position='" + position + "']");
-   tweetDiv.hide();
+	tweetDiv.animate({opacity: 0}, 800, function(){
+		console.log("Setting tweet element for div at position: " + position);
    
-   // Parse tweet data and set html
-   var tweetData = tweetJSON.text;   
-   var tweetInfo = tweetDiv.html(tweetData.parseURL().parseUsername().parseHashtag());
-   
-   // Prepend image
-   if(tweetJSON.user.profile_image_url){
-      var tweetImg = $(document.createElement("img"));
-      tweetImg.addClass("tweetImg");
-      tweetImg.attr('src', tweetJSON.user.profile_image_url);
-      tweetImg.prependTo(tweetDiv);
-   }
-   
-   position = position === 11 ? 1 : position + 1;
-   tweetDiv.fadeIn(800, function () {
-   	$("#ball").css("-webkit-animation", "");  
-   });
+	   // Parse tweet data and set html
+	   var tweetData = tweetJSON.text;   
+	   var tweetInfo = tweetDiv.html(tweetData.parseURL().parseUsername().parseHashtag());
+	   
+	   // Prepend image
+	   if(tweetJSON.user.profile_image_url){
+	      var tweetImg = $(document.createElement("img"));
+	      tweetImg.addClass("tweetImg");
+	      tweetImg.attr('src', tweetJSON.user.profile_image_url);
+	      tweetImg.prependTo(tweetDiv);
+	   }
+	   
+	   stopAnimation();
+	   
+	   position = position === 11 ? 1 : position + 1;
+	   showNewTweetAnimation(tweetDiv);
+	});
 }
