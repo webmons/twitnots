@@ -76,27 +76,28 @@ function ShowTweetAgain(tweetContainer){
 function SetTweetElement(tweetJSON, stopAnimation, showNewTweetAnimation){
    // get div element
    var tweetDiv = $("div[data-position='" + position + "']");
-	tweetDiv.animate({opacity: 0}, 800, function(){
-		console.log("Setting tweet element for div at position: " + position);
-   
-	   // Parse tweet data and set html
-	   var tweetData = tweetJSON.text;   
-	   var tweetInfo = tweetDiv.html(tweetData.parseURL().parseUsername().parseHashtag());
-	   
-        // Set background of div
-        if (tweetJSON.user.profile_banner_url) {
-            //var tweetImg = $(document.createElement("img"));
-            //tweetImg.addClass("tweetImg");
-            $(tweetDiv).css('background', "url(" + tweetJSON.user.profile_banner_url + ") no-repeat");
-            $(tweetDiv).css('background-size', "cover");
-            //$(tweetDiv).css('background-repeat', 'no-repeat');
-            //tweetImg.attr('src', tweetJSON.user.profile_image_url);
-            //tweetImg.prependTo(tweetDiv);
-        }
-	   
-	   stopAnimation();
-	   
-	   position = position === 11 ? 1 : position + 1;
-	   showNewTweetAnimation(tweetDiv);
-	});
+   tweetDiv.animate({ opacity: 0 }, 800, function () {
+       console.log("Setting tweet element for div at position: " + position);
+
+       // Parse tweet data and set html
+       var tweetData = tweetJSON.text;
+       var tweetInfo = tweetDiv.find(".content").html(tweetData.parseURL().parseUsername().parseHashtag());
+
+       // Set background of div
+       if (tweetJSON.user.profile_banner_url) {
+           //var tweetImg = $(document.createElement("img"));
+           //tweetImg.addClass("tweetImg");
+           $(tweetDiv).find('.content').css('max-width', $(tweetDiv).width());
+           $(tweetDiv).css('background', "url(" + tweetJSON.user.profile_banner_url + ") no-repeat");
+           $(tweetDiv).css('background-size', "cover");
+           //$(tweetDiv).css('background-repeat', 'no-repeat');
+           //tweetImg.attr('src', tweetJSON.user.profile_image_url);
+           //tweetImg.prependTo(tweetDiv);
+       }
+
+       stopAnimation();
+
+       position = position === 11 ? 1 : position + 1;
+       showNewTweetAnimation(tweetDiv);
+   });
 }
