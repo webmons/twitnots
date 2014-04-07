@@ -44,7 +44,7 @@ function ProcessTweetQueue(){
    if(tweetData)
    {      
       SpinBall();
-      SetTweetElement(tweetData.tweetJSON, StopBall, ShowTweetAgain);
+      SetTweetElement(tweetData.tweetJSON, StopBall);
    }
    
    console.log("Tweet data processed, queue size after shift: " + tweetQueue.length);
@@ -69,31 +69,17 @@ function SetupTweetBoxClick(){
 	});
 }
 
-function ShowTweetAgain(tweetContainer){
-	tweetContainer.animate({opacity: 1}, 2500);
-}
-
-function SetTweetElement(tweetJSON, stopAnimation, showNewTweetAnimation){
+function SetTweetElement(tweetJSON, stopAnimation){
    // get div element
    var tweetDiv = $("div[data-position='" + position + "']");
-	tweetDiv.animate({opacity: 0}, 800, function(){
-		console.log("Setting tweet element for div at position: " + position);
-   
-	   // Parse tweet data and set html
-	   var tweetData = tweetJSON.text;   
-	   var tweetInfo = tweetDiv.html(tweetData.parseURL().parseUsername().parseHashtag());
-	   
-	   // Prepend image
-	   if(tweetJSON.user.profile_image_url){
-	      var tweetImg = $(document.createElement("img"));
-	      tweetImg.addClass("tweetImg");
-	      tweetImg.attr('src', tweetJSON.user.profile_image_url);
-	      tweetImg.prependTo(tweetDiv);
-	   }
-	   
+	tweetDiv.animate({opacity: 0}, 1000, function(){
+		// Parse tweet data and set html
+	   var tweetData = tweetJSON.text;
+		tweetData = tweetData.parseURL().parseUsername().parseHashtag();   
+		$(this).html(tweetData);
+			    
+		$(this).animate({opacity: 1}, 1500);
 	   stopAnimation();
-	   
-	   position = position === 11 ? 1 : position + 1;
-	   showNewTweetAnimation(tweetDiv);
+		position = position === 11 ? 1 : position + 1;
 	});
 }

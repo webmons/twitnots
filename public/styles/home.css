@@ -47,13 +47,13 @@
    height: 150px;
    background-color: white;
    border: 1px #ddeef6 solid;
-   -webkit-transition: -webkit-transform 0.8s,opacity 0.8s,background 0.8s,width 0.8s,height 0.8s,font-size 0.8s;
-	-o-transition-property: width,height,-o-transform,background,font-size,opacity;
-	-o-transition-duration: 0.8s,0.8s,0.8s,0.8s,0.8s,0.8s;
-	-moz-transition-property: width,height,-o-transform,background,font-size,opacity;
-	-moz-transition-duration: 0.8s,0.8s,0.8s,0.8s,0.8s,0.8s;
-	transition-property: width,height,transform,background,font-size,opacity;
-	transition-duration: 0.8s,0.8s,0.8s,0.8s,0.8s,0.8s;
+   -webkit-transition: -webkit-transform 0.8s, background 0.8s, width 0.8s, height 0.8s, font-size 0.8s;
+	-o-transition-property: width,height,-o-transform,background,font-size;
+	-o-transition-duration: 0.8s,0.8s,0.8s,0.8s,0.8s;
+	-moz-transition-property: width,height,-o-transform,background,font-size;
+	-moz-transition-duration: 0.8s,0.8s,0.8s,0.8s,0.8s;
+	transition-property: width,height,transform,background,font-size;
+	transition-duration: 0.8s,0.8s,0.8s,0.8s,0.8s;
 }
 
 #mainContainer .tweetContainerLarge {			   
