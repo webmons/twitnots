@@ -1,16 +1,43 @@
 var position = 1;
+var imageIndex = 0;
+var IMAGE_COLLECTION_SIZE = 11;
 var tweetQueue = new Array();
+var imageArray = new Array(IMAGE_COLLECTION_SIZE);
 var timeoutId = null;
 var timeoutPeriod = 5000;
 
-$(document).ready(function () {   
-	var socket = SetupSocket();
-   ShowTweetsPerInterval();
+$(document).ready(function () {
+	PreloadBannerImages(function(){
+		var socket = SetupSocket();
+   	ShowTweetsPerInterval();		
+	});   
 });
+
+function PreloadBannerImages(getTweets){
+
+	var loaded  = 0;
+
+	for(var i = 0; i < IMAGE_COLLECTION_SIZE; i++)
+	{
+		var img = new Image();
+
+		img.onload = function(){
+			if(++loaded === IMAGE_COLLECTION_SIZE){
+         	if(getTweets)
+         		getTweets();
+        	}            
+		};
+
+		img.src = '../images/twitnots_banner' + (i+1) + '.jpg';
+		imageArray[i] = img;
+		console.log("New image added to queue");
+	}
+}
 
 function SetupSocket(){
    socket = io.connect('/');    
- 
+ 	
+ 	console.log("Socket created");
    socket.on('newTweet', function (data) {
       if(data.tweetJSON) {
       	console.log(data.tweetJSON);
@@ -28,6 +55,7 @@ function SetupSocket(){
 
 function ShowTweetsPerInterval()
 {
+   console.log("Executing show tweets per interval");
    ProcessTweetQueue();
    timeoutId = setTimeout(
    	function(){
@@ -55,6 +83,16 @@ function StopBall(){
 	$("#ball").css("-webkit-animation", "");
 }
 
+function SetImage(element, imageUrl, checkIndex){
+	
+	element.find('.content').css('max-width', $(this).width());
+   element.css('background', "url(" + imageUrl + ") no-repeat");
+	element.css('background-size', "cover");
+	
+	if(checkIndex)
+		checkIndex();
+}
+
 function SetTweetElement(startAnimation, tweetJSON, stopAnimation){
    
    startAnimation();
@@ -68,10 +106,16 @@ function SetTweetElement(startAnimation, tweetJSON, stopAnimation){
 		$(this).find('.content').html(tweetData);
 		
 		// Set background of div
-		if (tweetJSON.user.profile_banner_url) {
-            $(tweetDiv).find('.content').css('max-width', $(tweetDiv).width());
-	  		$(tweetDiv).css('background', "url(" + tweetJSON.user.profile_banner_url + ") no-repeat");
-  			$(tweetDiv).css('background-size', "cover");
+		if (tweetJSON.user.profile_banner_url)
+         SetImage($(this), tweetJSON.user.profile_banner_url, null);
+  		else
+  		{
+  			var imageUrl = imageArray[imageIndex].src;
+  			SetImage($(this), imageUrl, function(){
+	  			imageIndex++;
+	  			if(imageIndex == IMAGE_COLLECTION_SIZE)
+	  				imageIndex = 0;  				
+  			});  			
   		}
 			    
 		$(this).animate({opacity: 1}, 1500);
