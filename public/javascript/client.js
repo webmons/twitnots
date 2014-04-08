@@ -13,32 +13,26 @@ $(document).ready(function () {
 	});   
 });
 
-function PreloadBannerImages(getTweets){
-
+function PreloadBannerImages(startReceivingTweets){
 	var loaded  = 0;
-
-	for(var i = 0; i < IMAGE_COLLECTION_SIZE; i++)
-	{
+	for(var i = 0; i < IMAGE_COLLECTION_SIZE; i++){
 		var img = new Image();
-
 		img.onload = function(){
 			if(++loaded === IMAGE_COLLECTION_SIZE){
-         	if(getTweets)
-         		getTweets();
+         	if(startReceivingTweets)
+         		startReceivingTweets();
         	}            
 		};
 
 		img.src = '../images/twitnots_banner' + (i+1) + '.jpg';
 		imageArray[i] = img;
-		console.log("New image added to queue");
 	}
 }
 
 function SetupSocket(){
    socket = io.connect('/');    
  	
- 	console.log("Socket created");
-   socket.on('newTweet', function (data) {
+ 	socket.on('newTweet', function (data) {
       if(data.tweetJSON) {
       	console.log(data.tweetJSON);
          console.log("Size of tweet: " + JSON.stringify(data.tweetJSON).length);
@@ -53,9 +47,7 @@ function SetupSocket(){
    return socket;   
 }
 
-function ShowTweetsPerInterval()
-{
-   console.log("Executing show tweets per interval");
+function ShowTweetsPerInterval(){
    ProcessTweetQueue();
    timeoutId = setTimeout(
    	function(){
@@ -84,13 +76,21 @@ function StopBall(){
 }
 
 function SetImage(element, imageUrl, checkIndex){
-	
-	element.find('.content').css('max-width', $(this).width());
-   element.css('background', "url(" + imageUrl + ") no-repeat");
-	element.css('background-size', "cover");
+	$(element).find('.content').css('max-width', $(this).width());
+   $(element).css('background', "url(" + imageUrl + ") no-repeat");
+	$(element).css('background-size', "cover");
 	
 	if(checkIndex)
 		checkIndex();
+}
+
+function UseImageFromDefaultBanners(element){
+	var imageUrl = imageArray[imageIndex].src;
+	SetImage(element, imageUrl, function(){
+		imageIndex++;
+		if(imageIndex == IMAGE_COLLECTION_SIZE)
+			imageIndex = 0;  				
+	});
 }
 
 function SetTweetElement(startAnimation, tweetJSON, stopAnimation){
@@ -101,24 +101,26 @@ function SetTweetElement(startAnimation, tweetJSON, stopAnimation){
 	var tweetDiv = $("div[data-position='" + position + "']");
 	tweetDiv.animate({opacity: 0}, 1000, function(){
 		// Parse tweet data and set html
+		var element = $(this);
 		var tweetData = tweetJSON.text;
 		tweetData = tweetData.parseURL().parseUsername().parseHashtag();   
-		$(this).find('.content').html(tweetData);
+		element.find('.content').html(tweetData);
 		
 		// Set background of div
-		if (tweetJSON.user.profile_banner_url)
-         SetImage($(this), tweetJSON.user.profile_banner_url, null);
+		if (tweetJSON.user.profile_banner_url){
+			var img = new Image();
+			img.onload = function(){
+				SetImage(element, this.src);				
+			};
+			img.onerror = function(){
+				UseImageFromDefaultBanners(element);
+			};			
+			img.src = tweetJSON.user.profile_banner_url;
+      }
   		else
-  		{
-  			var imageUrl = imageArray[imageIndex].src;
-  			SetImage($(this), imageUrl, function(){
-	  			imageIndex++;
-	  			if(imageIndex == IMAGE_COLLECTION_SIZE)
-	  				imageIndex = 0;  				
-  			});  			
-  		}
-			    
-		$(this).animate({opacity: 1}, 1500);
+  			UseImageFromDefaultBanners(element);  			
+  					    
+		element.animate({opacity: 1}, 1500);
 	   stopAnimation();
 		position = position === 11 ? 1 : position + 1;
 	});
