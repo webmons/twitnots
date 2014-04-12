@@ -11,10 +11,16 @@ var port = 3700;
 app.set('views', __dirname + '/views');
 app.set('view engine', "jade");
 app.engine('jade', require('jade').__express);
+app.engine('html', require('ejs').renderFile);
 
 app.get("/", function(req, res){
    res.render("home");
 });
+
+app.get("/home", function(req, res){
+   res.render("home.html");
+});
+
 
 app.use(express.static(__dirname + '/public')); 
 var io = require('socket.io').listen(app.listen(port));
