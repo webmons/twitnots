@@ -1,12 +1,13 @@
 {
-    "name": "Twitnots",
+    "name": "EventBuzz.me",
     "version": "0.0.1",
     "description": "Real Time Tweets",
     "dependencies": {
         "socket.io": "0.9.16",
         "express": "3.5.0",
         "jade": "1.3.0",
-        "user-stream": "0.0.7"        
+        "user-stream": "0.0.7",
+        "ejs": "1.0.0"        
     },
     "author": "Webmons"
 }
