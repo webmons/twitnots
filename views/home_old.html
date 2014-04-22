@@ -1,13 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
+	<head>
+		<title>Twitnots</title><script src='//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js'></script>
+		<script src='/javascript/client.js'></script>
+		<script src='/socket.io/socket.io.js'></script>
+		<script src='/javascript/tweetParser.js'></script>
+		<script src='/javascript/knockout-3.1.0.js'></script>
+		<link rel='stylesheet' href="/styles/home.css" />
+	</head>
 	<body>
-		<head>
-			<title>Twitnots</title><script src='//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js'></script>
-			<script src='/javascript/client.js'></script>
-			<script src='/socket.io/socket.io.js'></script>
-			<script src='/javascript/tweetParser.js'></script>
-			<link rel='stylesheet' href="/styles/home.css" />
-		</head>
+		<script>
+			var NotificationsModel = function() {
+				items = ko.observableArray();
+			};
+
+			model = new NotificationsModel();
+			ko.applyBindings(model);
+		</script>
 		<div id="mainContainer">
 			<div class="tweetContainer tweetContainerLarge" data-position=1>
 				<span class="tweet"></span>
