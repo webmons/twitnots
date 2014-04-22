@@ -103,23 +103,10 @@ function SetTweetElement(startAnimation, tweetJSON, stopAnimation) {
       var element = $(this);
       var tweetData = tweetJSON.text;
       tweetData = tweetData.parseURL().parseUsername().parseHashtag();
+      element.find('blockquote p').html(tweetData);
 
-
-
-      var newDiv = $('<div style="position: relative; width: 19%; height: 150px; display: inline-block; border: 1px solid #000;"><div id="tweetContent" style="position: absolute; bottom: 0; left:0; height: 20%; width:100%;"></div></div></div>')
-      var newDivClone = newDiv.clone();
-      newDivClone.find('#tweetContent').css('background-image', element.find('#media').css('background-image'));
-      newDivClone.find('#tweetContent').html(element.find('#tweetContent').html());
-      $('body').append(newDivClone);
-
-      element.find('#tweetContent').html(tweetData);
-
-if(position===2)
-{
-  var video = '<embed width="100%" height="100%" src="http://www.youtube.com/v/XGSy3_Czz8k" type="application/x-shockwave-flash"></embed>';
-  element.find('#media').html(video);
-}
-
+      /*
+      - Retweet logic?
       element.css('border-color', '#4099FF');
       element.css('border-width', '3px');
       if (tweetJSON.retweeted === true) {
@@ -127,7 +114,7 @@ if(position===2)
             element.css('border-color', 'orange');
 
          element.css('border-color', 'red');
-      }
+      }*/
 
       // Set background of div
       if (tweetJSON.user.profile_banner_url) {
