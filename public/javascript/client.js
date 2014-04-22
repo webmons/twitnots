@@ -114,7 +114,7 @@ function SetTweetElement(startAnimation, tweetJSON, stopAnimation) {
             element.css('border-color', 'orange');
 
          element.css('border-color', 'red');
-      }*/
+      }
 
       // Set background of div
       if (tweetJSON.user.profile_banner_url) {
@@ -128,10 +128,10 @@ function SetTweetElement(startAnimation, tweetJSON, stopAnimation) {
          img.src = tweetJSON.user.profile_banner_url;
       } else
          UseImageFromDefaultBanners(element);
-
+*/
       element.animate({
          opacity : 1
-      }, 1500);
+      }, 300);
       stopAnimation();
       position = position === 3 ? 1 : position + 1;
    });
