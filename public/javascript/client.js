@@ -1,11 +1,14 @@
+var mainFeedRefresh = 0;
 var position = 1;
 var imageIndex = 0;
 var IMAGE_COLLECTION_SIZE = 3;
-var tweetQueue = new Array();
+var HISTORICAL_TWEET_SIZE = 9;
+var tweetQueue = [];
 var imageArray = new Array(IMAGE_COLLECTION_SIZE);
 var timeoutId = null;
 var timeoutPeriod = 5000;
-var model = null;
+var tweetHistory = new TweetHistoryCollection(HISTORICAL_TWEET_SIZE);
+var historicalTweetsRequired = false;
 
 $(document).ready(function() {
    PreloadBannerImages(function() {
@@ -35,8 +38,8 @@ function SetupSocket() {
 
    socket.on('newTweet', function(data) {
       if (data.tweetJSON) {
-         console.log(data.tweetJSON);
-         console.log("Size of tweet: " + JSON.stringify(data.tweetJSON).length);
+         //console.log(data.tweetJSON);
+         //console.log("Size of tweet: " + JSON.stringify(data.tweetJSON).length);
          // Add to queue
          tweetQueue.push(data);
       } else {
@@ -61,7 +64,7 @@ function ProcessTweetQueue() {
    if (tweetData)
       SetTweetElement(SpinBall, tweetData.tweetJSON, StopBall);
 
-   console.log("Tweet data processed, queue size after shift: " + tweetQueue.length);
+   //console.log("Tweet data processed, queue size after shift: " + tweetQueue.length);
 }
 
 function SpinBall() {
@@ -96,15 +99,16 @@ function SetTweetElement(startAnimation, tweetJSON, stopAnimation) {
 
    // Get div element
    var tweetDiv = $("div[data-position='" + position + "']");
-   tweetDiv.animate({
-      opacity : 0
-   }, 1000, function() {
+   tweetDiv.animate({ opacity : 0 }, 1000, function() {
       // Parse tweet data and set html
       var element = $(this);
       var tweetData = tweetJSON.text;
       tweetData = tweetData.parseURL().parseUsername().parseHashtag();
+      var oldTweetData = element.find('blockquote p').html(); 
       element.find('blockquote p').html(tweetData);
 
+		position = position === 3 ? 1 : position + 1;
+		
       /*
       - Retweet logic?
       element.css('border-color', '#4099FF');
@@ -128,11 +132,25 @@ function SetTweetElement(startAnimation, tweetJSON, stopAnimation) {
          img.src = tweetJSON.user.profile_banner_url;
       } else
          UseImageFromDefaultBanners(element);
-*/
-      element.animate({
-         opacity : 1
-      }, 300);
+		*/
+		
+      element.animate({ opacity : 1 }, 300);
       stopAnimation();
-      position = position === 3 ? 1 : position + 1;
+      if(mainFeedRefresh === 3){
+      	mainFeedRefresh = 0;
+      	historicalTweetsRequired = true;
+      }
+      else
+      	mainFeedRefresh += 1;
+      
+      if(historicalTweetsRequired){
+      	tweetHistory.Add(oldTweetData);
+      	$( ".col-md-4" ).each(function( index ) {
+				var mapValue = $(this).data("mapvalue");
+				var content = tweetHistory.Get(mapValue);
+				if(content)
+					$(this).find('p').html(content);
+			});
+      }
    });
 }
