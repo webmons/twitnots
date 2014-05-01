@@ -105,36 +105,40 @@ function SetTweetElement(startAnimation, tweetJSON, stopAnimation) {
       var tweetData = tweetJSON.text;
       tweetData = tweetData.parseURL().parseUsername().parseHashtag();
       var oldTweetData = element.find('blockquote p').html(); 
-      element.find('blockquote p').html(tweetData);
+      element.find('p').html(tweetData);
+      element.find('.userName').html("@"+tweetJSON.user.screen_name);
+      element.find('.userHandle').html(tweetJSON.user.name);
+      
+      var src = tweetJSON.user.profile_banner_url;
+      
+      if(!src){
+         src = 'http://www.lorempixel.com/500/200';
+      }
+      
+      if(element.find('.media img').length > 0){
+      	element.find('.media img').attr('src',src);
+      }
+      else {
+      	element.find('.media').append($('<img src='+src+'/>'));
+      }
 
 		position = position === 3 ? 1 : position + 1;
 		
-      /*
-      - Retweet logic?
-      element.css('border-color', '#4099FF');
-      element.css('border-width', '3px');
-      if (tweetJSON.retweeted === true) {
-         if (tweetJSON.retweet_count > 0)
-            element.css('border-color', 'orange');
-
-         element.css('border-color', 'red');
-      }
-
       // Set background of div
-      if (tweetJSON.user.profile_banner_url) {
+      /*if (tweetJSON.user.profile_banner_url) {
          var img = new Image();
          img.onload = function() {
-            SetImage(element.find('#media'), this.src);
+            SetImage(element.find('.media-body'), false);
          };
          img.onerror = function() {
             UseImageFromDefaultBanners(element);
          };
          img.src = tweetJSON.user.profile_banner_url;
       } else
-         UseImageFromDefaultBanners(element);
-		*/
+         UseImageFromDefaultBanners(element);*/
 		
-      element.animate({ opacity : 1 }, 300);
+		
+      element.animate({ opacity : 3000 }, 300);
       stopAnimation();
       if(mainFeedRefresh === 3){
       	mainFeedRefresh = 0;
