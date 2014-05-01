@@ -1,13 +1,14 @@
 var mainFeedRefresh = 0;
 var position = 1;
 var imageIndex = 0;
-var IMAGE_COLLECTION_SIZE = 3;
+var IMAGE_COLLECTION_SIZE = 9;
 var HISTORICAL_TWEET_SIZE = 9;
-var tweetQueue = [];
+var TWEET_STACK_SIZE = 24;
 var imageArray = new Array(IMAGE_COLLECTION_SIZE);
+var tweetHistory = new Collection(HISTORICAL_TWEET_SIZE);
+var tweetCollection = new Collection(TWEET_STACK_SIZE);
 var timeoutId = null;
 var timeoutPeriod = 5000;
-var tweetHistory = new TweetHistoryCollection(HISTORICAL_TWEET_SIZE);
 var historicalTweetsRequired = false;
 
 $(document).ready(function() {
@@ -31,6 +32,8 @@ function PreloadBannerImages(startReceivingTweets) {
       img.src = '../images/twitnots_banner' + (i + 1) + '.jpg';
       imageArray[i] = img;
    }
+   
+   console.log("Banner images loaded.");
 }
 
 function SetupSocket() {
@@ -40,8 +43,8 @@ function SetupSocket() {
       if (data.tweetJSON) {
          //console.log(data.tweetJSON);
          //console.log("Size of tweet: " + JSON.stringify(data.tweetJSON).length);
-         // Add to queue
-         tweetQueue.push(data);
+         tweetCollection.Add(data);
+         
       } else {
          console.log("Problem occured for newTweet event.");
       }
@@ -53,18 +56,15 @@ function SetupSocket() {
 function ShowTweetsPerInterval() {
    ProcessTweetQueue();
    timeoutId = setTimeout(function() {
-      ShowTweetsPerInterval();
-   }, timeoutPeriod);
+      ShowTweetsPerInterval();}, 
+      timeoutPeriod
+   );
 }
 
 function ProcessTweetQueue() {
-   // Get tweet data from queue
-   var tweetData = tweetQueue.shift();
-
+   var tweetData = tweetCollection.GetLatest();
    if (tweetData)
       SetTweetElement(SpinBall, tweetData.tweetJSON, StopBall);
-
-   //console.log("Tweet data processed, queue size after shift: " + tweetQueue.length);
 }
 
 function SpinBall() {
@@ -85,13 +85,11 @@ function SetImage(element, imageUrl, checkIndex) {
       checkIndex();
 }
 
-function UseImageFromDefaultBanners(element) {
-   var imageUrl = imageArray[imageIndex].src;
-   SetImage(element, imageUrl, function() {
-      imageIndex++;
-      if (imageIndex == IMAGE_COLLECTION_SIZE)
-         imageIndex = 0;
-   });
+function UseImageFromDefaultBannersCollection(historicalInfo) {
+   historicalInfo.bannerUrl = imageArray[imageIndex].src;
+   imageIndex++;
+   if (imageIndex == IMAGE_COLLECTION_SIZE)
+   	imageIndex = 0;
 }
 
 function SetTweetElement(startAnimation, tweetJSON, stopAnimation) {
@@ -104,36 +102,32 @@ function SetTweetElement(startAnimation, tweetJSON, stopAnimation) {
       var element = $(this);
       var tweetData = tweetJSON.text;
       tweetData = tweetData.parseURL().parseUsername().parseHashtag();
-      var oldTweetData = element.find('blockquote p').html(); 
+      
+      var historicalValues = element.data("historicalValues");
+      
+      
+      var historicalInfo = {};
+      historicalInfo.createdAt = tweetJSON.created_at;
+      historicalInfo.name = tweetJSON.user.name;
+      historicalInfo.html = tweetData;
+            
       element.find('blockquote p').html(tweetData);
-
 		position = position === 3 ? 1 : position + 1;
 		
-      /*
-      - Retweet logic?
-      element.css('border-color', '#4099FF');
-      element.css('border-width', '3px');
-      if (tweetJSON.retweeted === true) {
-         if (tweetJSON.retweet_count > 0)
-            element.css('border-color', 'orange');
-
-         element.css('border-color', 'red');
-      }
-
-      // Set background of div
-      if (tweetJSON.user.profile_banner_url) {
+	   if (tweetJSON.user.profile_banner_url) {
          var img = new Image();
          img.onload = function() {
-            SetImage(element.find('#media'), this.src);
+            historicalInfo.bannerUrl = this.src;
          };
          img.onerror = function() {
-            UseImageFromDefaultBanners(element);
+            UseImageFromDefaultBannersCollection(historicalInfo);
          };
          img.src = tweetJSON.user.profile_banner_url;
       } else
-         UseImageFromDefaultBanners(element);
-		*/
-		
+         UseImageFromDefaultBannersCollection(historicalInfo);
+         
+      element.data("historicalValues", historicalInfo);
+				
       element.animate({ opacity : 1 }, 300);
       stopAnimation();
       if(mainFeedRefresh === 3){
@@ -144,12 +138,17 @@ function SetTweetElement(startAnimation, tweetJSON, stopAnimation) {
       	mainFeedRefresh += 1;
       
       if(historicalTweetsRequired){
-      	tweetHistory.Add(oldTweetData);
+      	tweetHistory.Add(historicalValues);
       	$( ".col-md-4" ).each(function( index ) {
 				var mapValue = $(this).data("mapvalue");
-				var content = tweetHistory.Get(mapValue);
-				if(content)
-					$(this).find('p').html(content);
+				var info = tweetHistory.Get(mapValue);
+				//console.log(info);
+				if(info){
+					console.log(info.name);
+					$(this).find('p').html(info.html);
+					$(this).find('img').attr("src", info.bannerUrl);
+					$(this).find('h3').html(info.name);
+				}
 			});
       }
    });

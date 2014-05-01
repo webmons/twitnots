@@ -1,10 +1,11 @@
-function TweetHistoryCollection(size){
+function Collection(size){
 	var MAX_SIZE = size;
 	
 	this.stack = [];
 	
 	this.Add = function(item){		
 		if(this.stack.length == MAX_SIZE){
+			//console.log("Max size reached (" + this.stack.length + "), removing oldest item...");
 			this.stack.pop();			
 		}
 		this.stack.unshift(item);
@@ -14,5 +15,12 @@ function TweetHistoryCollection(size){
 		if(index >= this.stack.length || index < 0)
 			return null;
 		return this.stack[index];
+	};
+	
+	this.GetLatest = function(){
+		var item = this.stack.shift();
+		if(item)
+			return item;
+		return null;
 	};
 }
