@@ -100,35 +100,55 @@ function SetTweetElement(startAnimation, tweetJSON, stopAnimation) {
    tweetDiv.animate({ opacity : 0 }, 1000, function() {
       // Parse tweet data and set html
       var element = $(this);
-      var tweetData = tweetJSON.text;
-      tweetData = tweetData.parseURL().parseUsername().parseHashtag();
+      var tweetData = '';
+      tweetData = tweetJSON.text;
+      
+      // Handle undefined
+      if(tweetData)
+      	tweetData = tweetData.parseURL().parseUsername().parseHashtag();
       
       var historicalValues = element.data("historicalValues");
-      
       
       var historicalInfo = {};
       historicalInfo.createdAt = tweetJSON.created_at;
       historicalInfo.name = tweetJSON.user.name;
       historicalInfo.html = tweetData;
             
-      element.find('blockquote p').html(tweetData);
+      element.find('p').html(tweetData);
+      element.find('.userName').html("@"+tweetJSON.user.screen_name);
+      element.find('.userHandle').html(tweetJSON.user.name);
+      
+      var src = tweetJSON.user.profile_banner_url;
+      
+      if(!src){
+         src = 'http://www.lorempixel.com/500/200';
+      }
+      
+      if(element.find('.media img').length > 0){
+      	element.find('.media img').attr('src',src);
+      }
+      else {
+      	element.find('.media').append($('<img src='+src+'/>'));
+      }
+
 		position = position === 3 ? 1 : position + 1;
 		
-	   if (tweetJSON.user.profile_banner_url) {
+		// Setup historical tweet images
+		if (src) {
          var img = new Image();
          img.onload = function() {
-            historicalInfo.bannerUrl = this.src;
-         };
-         img.onerror = function() {
+            historicalInfo.bannerUrl = this.src;		
+      	};
+      	img.onerror = function() {
             UseImageFromDefaultBannersCollection(historicalInfo);
          };
          img.src = tweetJSON.user.profile_banner_url;
       } else
-         UseImageFromDefaultBannersCollection(historicalInfo);
-         
-      element.data("historicalValues", historicalInfo);
-				
-      element.animate({ opacity : 1 }, 300);
+      	UseImageFromDefaultBannersCollection(historicalInfo);
+      		
+		element.data("historicalValues", historicalInfo);
+		
+      element.animate({ opacity : 3000 }, 300);
       stopAnimation();
       if(mainFeedRefresh === 3){
       	mainFeedRefresh = 0;
@@ -142,9 +162,7 @@ function SetTweetElement(startAnimation, tweetJSON, stopAnimation) {
       	$( ".col-md-4" ).each(function( index ) {
 				var mapValue = $(this).data("mapvalue");
 				var info = tweetHistory.Get(mapValue);
-				//console.log(info);
-				if(info){
-					console.log(info.name);
+				if(info){					
 					$(this).find('p').html(info.html);
 					$(this).find('img').attr("src", info.bannerUrl);
 					$(this).find('h3').html(info.name);
