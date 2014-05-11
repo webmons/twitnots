@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="utf-8">
+      <title>World Cup 2014 Brazil</title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <meta name="description" content="eventbuzz.me">
+      <meta name="author" content="Dave&Kevin">
+      <script src='//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js'></script>
+      <script src='/javascript/structures.js'></script>
+      <script src='/javascript/client.js'></script>
+      <script src='/socket.io/socket.io.js'></script>
+      <script src='/javascript/tweetParser.js'></script>
+      <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+      <style>
+         html, body {
+            height: 100%;
+            width: 100%;
+            padding: 0;
+            margin: 0;
+            font-family: 'Open Sans', sans-serif;
+            color: #fff;
+            text-align: center;
+         }
+         a {
+            color: #4a443d;
+            text-decoration: none
+         }
+         body {
+            overflow: auto;
+         }
+         #skrollr-body {
+            width: 100%;
+            height: 100%;
+         }
+         #skrollr-body  div {
+            overflow: hidden;
+            position: absolute;
+         }
+         .centered {
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            margin: auto;
+         }
+         #title_screen {
+            background: #fff url('/images/logo.png') center top no-repeat;
+            padding-top: 100px;
+            z-index: 5;
+         }
+         #content_screen {
+            background: #5ca028 url('../images/merry2.jpg') center bottom no-repeat;
+            z-index: 4;
+         }
+         #snow {
+            width: 600px;
+            background: #fff url('/images/ExampleTweets.png') center center no-repeat
+         }
+         #title_info, #content_info {
+            width: 15%;
+            height: 50px;
+            z-index: 10;
+            font-size: 22px;
+            line-height: 50px;
+         }
+
+         #title_info {
+            background: #5ca028;
+            bottom: auto;
+            right: auto;
+         }
+         #content_info {
+            background: #fff;
+            color: #5ca028;
+            top: auto;
+            left: auto;
+         }
+
+      </style>
+   </head>
+   <body>
+      <!--<div class="block" id="block1" data-0="width:100%;" data-1000="width:0%;"></div>
+      <div class="block" id="block2"></div>-->
+
+      <div id="skrollr-body">
+         <div id="title_screen" class="centered"
+         data-0="width:100%;"
+         data-500="width:0%;"
+         data-smooth-scrolling="off"
+         data-anchor-target="#title_screen"></div>
+         <div id="content_screen" class="centered "
+         data-500="width:100%;"
+         data-smooth-scrolling="off"
+         data-anchor-target="#title_screen">
+            <div id="snow" class="centered"></div>
+         </div>
+         <div id="title_info" class="centered">
+            Scroll &#x25BC; for Stream 
+         </div>
+         <div id="content_info" class="centered">
+            Scroll &#x25B2; for Title
+         </div>
+      </div>
+      <script src="javascript/skrollr.js"></script>
+      <script>
+         window.onload = function() {
+            skrollr.init({            });
+         };
+      </script>
+   </body>
+</html>
