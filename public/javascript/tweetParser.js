@@ -19,5 +19,5 @@ String.prototype.parseHashtag = function() {
 };
 
 String.prototype.makeLink = function(url){
-	return "<a href='" + url + "' target='_blank'>" + this + "</a>";
+	return "<a href='".concat(url).concat("' target='_blank'>").concat(this).concat("</a>");
 };
