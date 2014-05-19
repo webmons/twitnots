@@ -9,5 +9,9 @@
         "user-stream": "0.0.7",
         "ejs": "1.0.0"        
     },
+    "engines": {
+    	"node": "0.8.x",
+    	"npm": "1.2.x"
+    },
     "author": "Webmons"
 }
