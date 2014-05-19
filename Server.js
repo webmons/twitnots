@@ -6,7 +6,7 @@ var express = require('express')
   , path = require('path');
 
 var app = express();
-var port = 3700;
+var port = process.env.PORT || 3030;
  
 app.set('views', __dirname + '/views');
 app.set('view engine', "jade");
