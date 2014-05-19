@@ -21,6 +21,21 @@ app.get("/home", function(req, res){
    res.render("index.html");
 });
 
+app.get("/testing", function(req, res){
+   res.render("index_TEST.html");
+});
+
+app.get("/new", function(req, res){
+   res.render("newStyle.html");
+});
+
+app.get("/Production", function(req, res){
+   res.render("responsive_home.html");
+});
+
+app.get("/par", function(req, res){
+   res.render("main.html");
+});
 
 app.use(express.static(__dirname + '/public')); 
 var io = require('socket.io').listen(app.listen(port));

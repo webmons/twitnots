@@ -1,4 +1,49 @@
+ul{
+  list-style-type: none;
+}
+
+li{
+  border-radius: 4px;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  box-shadow: 0px 0px 10px 0px #D3D3D3;
+}
+
+#realFeed{
+  width: 460px;
+  margin: auto;  
+}
+
+@media (min-width: 1200px){
+  #realFeed{
+    width: 580px;
+  }
+}
+
+@media only screen 
+and (min-device-width : 320px) 
+and (max-device-width : 480px) {
+  #realFeed{
+    width: 360px;
+  }
+}
+
+.tweetContainer{
+}
+
 img{
-	max-height: 175px !important;
-	background-size: cover !important;
+  max-width: 100%;
+  margin: auto;
+  display: block;
+  border-radius: 4px;
+}
+
+.tweet{
+  padding: 0px 5px 5px 5px;
+}
+
+h3{
+  padding: 0px 5px 0px 5px;
+  margin-top: 20px;
+  margin-bottom: 10px;
 }
