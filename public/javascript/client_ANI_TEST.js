@@ -80,19 +80,19 @@ function SetTweetElement(tweetJSON) {
 	var newElement = $(tweetDiv);
 	var oldElement = $(remove);
 	var tweetData = '';
-	tweetData = tweetJSON.text;
+	tweetData = tweetJSON.tweetText;
 
 	// Handle undefined
 	if (tweetData)
 		tweetData = tweetData.parseURL().parseUsername().parseHashtag();
 
 	newElement.find('p').html(tweetData);
-	newElement.find('span').html("@" + tweetJSON.user.screen_name);
+	newElement.find('span').html("@" + tweetJSON.screenName);
 	console.log();
-	newElement.find('.profileImg').attr("src", tweetJSON.user.profile_image_url);
+	newElement.find('.profileImg').attr("src", tweetJSON.profileImage);
 	//element.find('.userHandle').html(tweetJSON.user.name);
 
-	var src = tweetJSON.user.profile_banner_url;
+	var src = tweetJSON.bannerImage;
 	
 	var img = new Image();
 	img.onload = function() {
