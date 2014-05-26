@@ -16,7 +16,7 @@
 		<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
 		<script src='//ajax.googleapis.com/ajax/libs/jquery/2.1.0/jquery.min.js'></script>
 		<script src='/javascript/structures.js'></script>
-		<script src='/javascript/client_ANI_TEST.js'></script>
+		<script src='/javascript/client.js'></script>
 		<script src='/socket.io/socket.io.js'></script>
 		<script src='/javascript/tweetParser.js'></script>
 
@@ -24,7 +24,7 @@
 			.banner {
 				max-width: 100%;
 				margin: auto;
-				display: block;				
+				display: block;
 			}
 
 			.main section {
@@ -33,6 +33,15 @@
 
 			.container {
 				padding: 8px;
+			}
+
+			.bottomPad {
+				padding-bottom: 12px;
+			}
+
+			.userName {
+				padding-left: 2px;
+				vertical-align: middle;
 			}
 
 			a {
@@ -50,7 +59,16 @@
 			a:visited {
 				color: #4099FF;
 			}
-
+			
+			.online{
+				color: #005C05; 
+				font-weight: 700;	
+			}
+			
+			.offline{
+				color: #BB1114; 
+				font-weight: 700;
+			}
 		</style>
 	</head>
 	<body>
@@ -82,8 +100,10 @@
 					<section>
 						<img class="banner" />
 						<div class="container">
-							<img class="profileImg" style="float: left" />
-							<span>@kevinbargary</span>
+							<div class="bottomPad">
+								<img class="profileImg" style="float: left" />
+								<span class="userName">@kevinbargary</span>
+							</div>
 							<p>
 								Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sodales urna non odio egestas tempor. Nunc vel vehicula ante. Etiam bibendum iaculis libero.
 							</p>
@@ -93,7 +113,7 @@
 						<img class="banner" />
 						<div class="container">
 							<img class="profileImg" style="float: left" />
-							<span>@davecremins</span>
+							<span class="userName">@davecremins</span>
 							<p>
 								Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sodales urna non odio egestas tempor. Nunc vel vehicula ante. Etiam bibendum iaculis libero.
 							</p>
@@ -103,7 +123,7 @@
 						<img class="banner" />
 						<div class="container">
 							<img class="profileImg" style="float: left" />
-							<span>@joebloggs</span>
+							<span class="userName">@joebloggs</span>
 							<p>
 								Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sodales urna non odio egestas tempor. Nunc vel vehicula ante. Etiam bibendum iaculis libero.
 							</p>
@@ -113,15 +133,19 @@
 				</article>
 
 				<aside>
-					<img src="/images/logo.png" style="width: 100px; height: 120px; float: left;" />
-					<div style="display: inline-block; float: left;">
-						<span class="eventData">EVENT: Football World Cup</span>
-						<br />
-						<span class="eventData">LOCATION: Brazil, South America</span>
-						<br />
-						<span class="eventData">DATE: June 9th - July 20th 2014</span>
-					</div>
-				</aside>
+					
+						<img src="/images/logo.png" style="width: 100px; height: 120px; float: left;" />
+						<div style="display: inline-block; float: left;">
+							<span class="eventData">EVENT: Football World Cup</span>
+							<br />
+							<span class="eventData">LOCATION: Brazil, South America</span>
+							<br />
+							<span class="eventData">DATE: June 9th - July 20th 2014</span>
+							<br />
+							<br />
+							<span class="eventData">Stream Status: <span id="streamStatus"></span></span>
+						</div>				
+				</aside>			
 
 			</div>
 			<!-- #main -->
@@ -136,7 +160,7 @@
 
 		<!-- <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 		<script>
-			window.jQuery || document.write('<script src="js/vendor/jquery-1.11.0.min.js"><\/script>')
+		window.jQuery || document.write('<script src="js/vendor/jquery-1.11.0.min.js"><\/script>')
 		</script>
 
 		<script src="js/main.js"></script>-->

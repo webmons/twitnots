@@ -34,13 +34,24 @@ function PreloadBannerImages(startReceivingTweets) {
 function SetupSocket() {
 	socket = io.connect('/');
 
+	socket.on('connect', function() {
+		$("#streamStatus").removeClass("offline");
+		$("#streamStatus").addClass("online");
+		$("#streamStatus").text("ONLINE");
+	});
+
 	socket.on('newTweet', function(data) {
 		if (data.tweetJSON) {
 			tweetCollection.Add(data);
-
 		} else {
 			console.log("Problem occured for newTweet event.");
 		}
+	});
+
+	socket.on('error', function(err) {
+		$("#streamStatus").removeClass("online");
+		$("#streamStatus").addClass("offline");
+		$("#streamStatus").text("OFFLINE");
 	});
 
 	return socket;
@@ -93,7 +104,7 @@ function SetTweetElement(tweetJSON) {
 	//element.find('.userHandle').html(tweetJSON.user.name);
 
 	var src = tweetJSON.bannerImage;
-	
+
 	var img = new Image();
 	img.onload = function() {
 		SetElementContent(this.src, newElement, oldElement);
@@ -102,14 +113,16 @@ function SetTweetElement(tweetJSON) {
 		SetElementContent(UseImageFromDefaultBannersCollection(), newElement, oldElement);
 	};
 
-	if(src)
+	if (src)
 		img.src = src;
 	else
 		img.src = UseImageFromDefaultBannersCollection();
 }
 
-function SetElementContent(imgSrc, newElement, oldElement){
+function SetElementContent(imgSrc, newElement, oldElement) {
 	$(newElement).find('.banner').attr("src", imgSrc);
 	$(newElement).prependTo("article").hide().show("clip");
-	$(oldElement).hide("clip", function() {	$(this).remove();	});
+	$(oldElement).hide("clip", function() {
+		$(this).remove();
+	});
 }
