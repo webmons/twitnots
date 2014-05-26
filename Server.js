@@ -14,27 +14,7 @@ app.engine('jade', require('jade').__express);
 app.engine('html', require('ejs').renderFile);
 
 app.get("/", function(req, res){
-   res.render("home");
-});
-
-app.get("/home", function(req, res){
-   res.render("index.html");
-});
-
-app.get("/testing", function(req, res){
-   res.render("index_TEST.html");
-});
-
-app.get("/new", function(req, res){
-   res.render("newStyle.html");
-});
-
-app.get("/Production", function(req, res){
    res.render("responsive_home.html");
-});
-
-app.get("/par", function(req, res){
-   res.render("main.html");
 });
 
 app.use(express.static(__dirname + '/public')); 
@@ -59,11 +39,6 @@ function CreateStream(tracking){
       access_token_key: process.env.TWITTER_ACCESS_TOKEN_KEY,
       access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET
    });
-	
-	console.log("Twitter consumer key: " + process.env.TWITTER_CONSUMER_KEY);
-	console.log("Twitter consumer secret: " + process.env.TWITTER_CONSUMER_SECRET);
-	console.log("Twitter access token key: " + process.env.TWITTER_ACCESS_TOKEN_KEY);
-	console.log("Twitter access token secret: " + process.env.TWITTER_ACCESS_TOKEN_SECRET);
 	
    var params = {
       track: tracking
