@@ -7,6 +7,7 @@ var timeoutId = null;
 var timeoutPeriod = 8000;
 
 $(document).ready(function() {
+	SetStreamStatus("starting", "STARTING...");
 	PreloadBannerImages(function() {
 		var socket = SetupSocket();
 		ShowTweetsPerInterval();
@@ -31,13 +32,17 @@ function PreloadBannerImages(startReceivingTweets) {
 	console.log("Banner images loaded.");
 }
 
+function SetStreamStatus(statusClass, msg){
+	$("#streamStatus").removeClass();
+	$("#streamStatus").addClass(statusClass);
+	$("#streamStatus").text(msg);
+}
+
 function SetupSocket() {
 	socket = io.connect('/');
 
 	socket.on('connect', function() {
-		$("#streamStatus").removeClass("offline");
-		$("#streamStatus").addClass("online");
-		$("#streamStatus").text("ONLINE");
+		SetStreamStatus("online", "ONLINE");
 	});
 
 	socket.on('newTweet', function(data) {
@@ -49,9 +54,7 @@ function SetupSocket() {
 	});
 
 	socket.on('error', function(err) {
-		$("#streamStatus").removeClass("online");
-		$("#streamStatus").addClass("offline");
-		$("#streamStatus").text("OFFLINE");
+		SetStreamStatus("offline", "OFFLINE");
 	});
 
 	return socket;
