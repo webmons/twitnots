@@ -21,16 +21,21 @@ app.use(express.static(__dirname + '/public'));
 var io = require('socket.io').listen(app.listen(port));
 
 var stream = CreateStream(track.Tags.toString());
-var english = "en";
+var english = "en"; // Only supporting english (en)
 
 io.sockets.on('connection', function (socket) {
    console.log("Connection from: " + socket.id);
    // Listen for the data event of the stream and broadcast to connected clients
    stream.on('data', function (json) {
-   	var language = json.user.lang; 
+   	// lang indicates a language identifier corresponding to the machine-detected language of the Tweet text
+   	var language = "";
+   	if(json.user.lang)
+   		language = json.user.lang;
+   		 
    	if(language === english){
 	   	var condensedJSON = {
 	   		tweetText: json.text,
+	   		tweetTime: new Date(json.created_at).getSeconds(),
 	   		screenName: json.user.screen_name,
 	   		profileImage: json.user.profile_image_url,
 	   		bannerImage: json.user.profile_banner_url
