@@ -21,18 +21,22 @@ app.use(express.static(__dirname + '/public'));
 var io = require('socket.io').listen(app.listen(port));
 
 var stream = CreateStream(track.Tags.toString());
+var english = "en";
 
 io.sockets.on('connection', function (socket) {
    console.log("Connection from: " + socket.id);
    // Listen for the data event of the stream and broadcast to connected clients
-   stream.on('data', function (json) { 
-   	var condensedJSON = {
-   		tweetText: json.text,
-   		screenName: json.user.screen_name,
-   		profileImage: json.user.profile_image_url,
-   		bannerImage: json.user.profile_banner_url
-   	};  
-      socket.emit('newTweet', { tweetJSON: condensedJSON });      
+   stream.on('data', function (json) {
+   	var language = json.user.lang; 
+   	if(language === english){
+	   	var condensedJSON = {
+	   		tweetText: json.text,
+	   		screenName: json.user.screen_name,
+	   		profileImage: json.user.profile_image_url,
+	   		bannerImage: json.user.profile_banner_url
+	   	};  
+	      socket.emit('newTweet', { tweetJSON: condensedJSON });      
+     }     
    });
 });
 
