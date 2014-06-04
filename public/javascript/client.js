@@ -82,6 +82,15 @@ function UseImageFromDefaultBannersCollection() {
 	return bannerUrl;
 }
 
+function ParseTweetTime(tweetTime){
+	var time = new Date().getSeconds() - tweetTime;
+	
+	if(time <= 0)
+		time = 1;
+	
+	return (time <= 1) ? time.toString() + " second ago" : time.toString() + " seconds ago";  
+}
+
 function SetTweetElement(tweetJSON) {
 	// Get div element
 	var first = $("section").first();
@@ -91,8 +100,8 @@ function SetTweetElement(tweetJSON) {
 	var tweetDiv = $(first).clone();
 
 	// Parse tweet data and set html
-	var newElement = $(tweetDiv);
-	var oldElement = $(remove);
+	var newElement = tweetDiv;
+	var oldElement = remove;
 	var tweetData = '';
 	tweetData = tweetJSON.tweetText;
 
@@ -101,11 +110,10 @@ function SetTweetElement(tweetJSON) {
 		tweetData = tweetData.parseURL().parseUsername().parseHashtag();
 
 	newElement.find('p').html(tweetData);
-	newElement.find('span').html("@" + tweetJSON.screenName);
-	console.log();
+	newElement.find('.userName').html(("@" + tweetJSON.screenName).parseUsername());
+	newElement.find('.tweetTime').html(ParseTweetTime(tweetJSON.tweetTime));
 	newElement.find('.profileImg').attr("src", tweetJSON.profileImage);
-	//element.find('.userHandle').html(tweetJSON.user.name);
-
+	
 	var src = tweetJSON.bannerImage;
 
 	var img = new Image();
@@ -123,9 +131,10 @@ function SetTweetElement(tweetJSON) {
 }
 
 function SetElementContent(imgSrc, newElement, oldElement) {
-	$(newElement).find('.banner').attr("src", imgSrc);
-	$(newElement).prependTo("article").hide().show("clip");
-	$(oldElement).hide("clip", function() {
-		$(this).remove();
+	newElement.find('.banner').attr("src", imgSrc);
+	newElement.prependTo("article").hide().show("clip", function(){
+		oldElement.hide("clip", function() {
+			$(this).remove();
+		});		
 	});
 }
