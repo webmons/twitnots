@@ -9,6 +9,7 @@ textarea {
 }
 
 html {
+	
     font-size: 1em;
     line-height: 1.4;
 }
@@ -113,7 +114,7 @@ nav ul {
 
 nav a {
     font-family: 'Amatic SC', cursive;
-    font-size: 1.6em;
+    font-size: 2.5em;
     font-weight: 700;
     display: block;
     margin-bottom: 10px;
@@ -147,7 +148,7 @@ nav a {
 
     .main aside {
         /*color: white;*/
-        padding: 10px 5% 10px 1%;
+        padding: 10px 1% 10px 1%;
     }
 
 .footer-container footer {
@@ -182,6 +183,10 @@ nav a {
     font-weight: 700;
 }
 
+.show{
+	display: inline-block;
+}
+
 
 
 
@@ -204,6 +209,7 @@ nav a {
    ==================== */
 
     nav a {
+    	font-size: 1.4em;
         float: left;
         width: 27%;
         margin: 0 1.7%;
@@ -218,7 +224,7 @@ nav a {
     nav li:last-child a {
         margin-right: 0;
     }
-
+    
     /* ========================
     INTERMEDIATE: IE Fixes
    ======================== */

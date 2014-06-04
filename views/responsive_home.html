@@ -19,7 +19,6 @@
       <script src='/javascript/client.js'></script>
       <script src='/socket.io/socket.io.js'></script>
       <script src='/javascript/tweetParser.js'></script>
-
       <style>
          .banner {
             max-width: 100%;
@@ -102,13 +101,12 @@
          <div class="main wrapper clearfix">
 
             <article>
-               <header></header>
                <section>
                   <img class="banner" />
                   <div class="container">
                      <div class="bottomPad">
                         <img class="profileImg" style="float: left" />
-                        <span class="userName">@kevinbargary</span>
+                        <span class="userName">@joebloggs</span>
                      </div>
                      <p>
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sodales urna non odio egestas tempor. Nunc vel vehicula ante. Etiam bibendum iaculis libero.
@@ -119,7 +117,7 @@
                   <img class="banner" />
                   <div class="container">
                      <img class="profileImg" style="float: left" />
-                     <span class="userName">@davecremins</span>
+                     <span class="userName">@joebloggs</span>
                      <p>
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sodales urna non odio egestas tempor. Nunc vel vehicula ante. Etiam bibendum iaculis libero.
                      </p>
@@ -140,16 +138,59 @@
             <aside>
 
                <img src="/images/wc_logo_100.png" style="float: left;" />
-               <div style="display: inline-block; float: left;">
-                  <span class="eventData">EVENT: Football World Cup</span>
-                  <br />
-                  <span class="eventData">LOCATION: Brazil, South America</span>
-                  <br />
-                  <span class="eventData">DATE: June 9th - July 20th 2014</span>
-                  <br />
-                  <br />
-                  <span class="eventData">Stream Status: <span id="streamStatus"></span></span>
+               <div style="display: block; margin-bottom: 10px;">
+                  <div class="eventData">EVENT: Football World Cup</div>
+                  <div class="eventData">LOCATION: Brazil, South America</div>
+                  <div class="eventData">DATE: June 9th - July 20th 2014</div>
+                  <div class="eventData">Stream Status: <span id="streamStatus"></span></div>
                </div>
+               <div style="font-size:.8em;">
+                  	<div id="groupA" class="eventData" style="background: #5ca028;color:white; padding-left: 10px; margin-bottom: 2px; cursor: pointer">Group A</div>
+                  	<div class="groupData" style="display:none; padding:left: 5px;">
+                  	<div>Brazil v Croatia Thursday June 12th 9pm GMT</div>
+                  	<div>Mexico v Cameroon Friday June 13th 5pm GMT</div>
+                  	<div>Brazil v Mexico Tuesday June 17th 8pm GMT</div>
+                  	<div>Croatia v Cameroon Wednesday June 18th 8pm GMT</div>
+                  	<div>Brazil v Cameroon Monday June 23rd 9pm GMT</div>
+                  	<div>Croatia v Mexico Monday June 23rd 9pm GMT</div>
+                	</div>
+    <div id="groupB" class="eventData" style="background: #5ca028;color:white; padding-left: 10px; margin-bottom: 2px; cursor: pointer">Group B</div>
+    <div class="groupData" style="display:none;">
+          	<div>Spain v Netherlands Friday June 13th 8pm GMT</div>
+                  	<div>Chile v Australia Friday June 13th 11pm GMT</div>
+                  	<div>Spain v Chile Wednesday June 18th 11pm GMT</div>
+                  	<div>Netherlands v Australia Wednesday June 18th 5pm GMT</div>
+                  	<div>Spain v Australia Monday June 23rd 5pm GMT</div>
+                  	<div>Netherlands v Chile Monday June 23rd 5pm GMT</div>
+                  </div>
+    <div id="groupC" class="eventData" style="background: #5ca028;color:white; padding-left: 10px; margin-bottom: 2px; cursor: pointer">Group C</div>
+    <div class="groupData" style="display:none;">
+          	<div>Colombia v Greece Saturday June 14th 5pm GMT</div>
+                  	<div>Ivory Coast v Japan Saturday June 14th 11pm GMT</div>
+                  	<div>Colombia v Ivory Coast Thursday June 19th 11pm GMT</div>
+                  	<div>Greece v Japan Thursday June 19th 11pm GMT</div>
+                  	<div>Colombia v Japan Tuesday June 24th 9pm GMT</div>
+                  	<div>Greece v Ivory Coast Tuesday June 24th 9pm GMT</div>
+                  </div>
+    <div id="groupD" class="eventData" style="background: #5ca028;color:white; padding-left: 10px; margin-bottom: 2px; cursor: pointer">Group D</div>
+    <div class="groupData" style="display:none;">
+          	<div>Brazil v Croatia Thursday June 12th 9pm GMT</div>
+                  	<div>Mexico v Cameroon Friday June 13th 5pm GMT</div>
+                  	<div>Brazil v Mexico Tuesday June 17th 8pm GMT</div>
+                  	<div>Croatia v Cameroon Wednesday June 18th 8pm GMT</div>
+                  	<div>Brazil v Cameroon Monday June 23rd 9pm GMT</div>
+                  	<div>Croatia v Mexico Monday June 23rd 9pm GMT</div>
+                  	</div>
+    <div id="groupE" class="eventData" style="background: #5ca028;color:white; padding-left: 10px; margin-bottom: 2px; cursor: pointer">Group E</div>
+    <div class="groupData" style="display:none;">
+          	<div>Brazil v Croatia Thursday June 12th 9pm GMT</div>
+                  	<div>Mexico v Cameroon Friday June 13th 5pm GMT</div>
+                  	<div>Brazil v Mexico Tuesday June 17th 8pm GMT</div>
+                  	<div>Croatia v Cameroon Wednesday June 18th 8pm GMT</div>
+                  	<div>Brazil v Cameroon Monday June 23rd 9pm GMT</div>
+                  	<div>Croatia v Mexico Monday June 23rd 9pm GMT</div>
+                  	</div>
+                  </div>
             </aside>
 
          </div>
