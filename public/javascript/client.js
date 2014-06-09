@@ -12,7 +12,35 @@ $(document).ready(function() {
 		var socket = SetupSocket();
 		ShowTweetsPerInterval();
 	});
+	
+	var $groupA = $("#groupA"), $groupB = $("#groupB"), $groupC = $("#groupC"),
+	$groupD = $("#groupD"), $groupE = $("#groupE"), $groupF = $("#groupF"), 
+	$groupG = $("#groupG"), $groupH = $("#groupH");
+	
+	$groupA.click(function(){ManageToggle($(this));});
+	$groupB.click(function(){ManageToggle($(this));});
+	$groupC.click(function(){ManageToggle($(this));});
+	$groupD.click(function(){ManageToggle($(this));});
+	$groupE.click(function(){ManageToggle($(this));});
+	$groupF.click(function(){ManageToggle($(this));});
+	$groupG.click(function(){ManageToggle($(this));});
+	$groupH.click(function(){ManageToggle($(this));});
 });
+
+function ManageToggle($group){
+	var $groupData = $group.next(".groupData");
+		
+	if(!$groupData.hasClass("show"))
+	{
+		$groupData.addClass("show");
+		$groupData.slideDown("slow");
+	}
+	else
+	{
+		$groupData.removeClass("show");
+		$groupData.slideUp("slow");
+	}
+}
 
 function PreloadBannerImages(startReceivingTweets) {
 	var loaded = 0;
