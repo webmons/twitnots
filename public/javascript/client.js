@@ -118,7 +118,7 @@ function ParseTweetTime(tweetTime){
 	var nowInSeconds = Date.now() / 1000;
 		var time = nowInSeconds - thenInSeconds;
 	
-	if(time <= 0)
+	if(time < 1)
 		time = 1;
 	else
 		time = Math.round(time);
