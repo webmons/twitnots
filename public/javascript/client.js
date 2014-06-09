@@ -75,7 +75,6 @@ function SetupSocket() {
 	
 	socket.on('latestTweets', function(data){
 		if(data.latestTweets){
-			alert(data.latestTweets.length);
 			SetupContentForInitialViewing(data.latestTweets);
 		}
 		else{
@@ -98,6 +97,11 @@ function SetupSocket() {
 	return socket;
 }
 
+function SetupContentForInitialViewing(arrayOfTweets){
+	for (var i = 0; i < arrayOfTweets.length; i++)
+		SetupInitialContent(arrayOfTweets[i], $('#' + (i + 1)));
+}
+
 function ShowTweetsPerInterval() {
 	ProcessTweetQueue();
 	timeoutId = setTimeout(function() {
@@ -108,7 +112,7 @@ function ShowTweetsPerInterval() {
 function ProcessTweetQueue() {
 	var tweetData = tweetCollection.GetLatest();
 	if (tweetData)
-		SetTweetElement(tweetData.tweetJSON);
+		SetNewTweetElement(tweetData.tweetJSON);
 }
 
 function UseImageFromDefaultBannersCollection() {
@@ -136,7 +140,12 @@ function ParseTweetTime(tweetTime){
 	return (time <= 1) ? time.toString() + " second ago" : time.toString() + " seconds ago";  
 }
 
-function SetTweetElement(tweetJSON) {
+function SetupInitialContent(tweetJSON, tweetDiv) {
+	SetTweetContent(tweetJSON, tweetDiv);
+	SetupImageBanner(tweetJSON, tweetDiv);	
+}
+
+function SetNewTweetElement(tweetJSON) {
 	// Get div element
 	var first = $("section").first();
 	var remove = $("section:gt(-2)");
@@ -147,6 +156,16 @@ function SetTweetElement(tweetJSON) {
 	// Parse tweet data and set html
 	var newElement = tweetDiv;
 	var oldElement = remove;
+	
+	SetTweetContent(tweetJSON, newElement);
+	SetupImageBanner(tweetJSON, newElement, function(){
+		oldElement.hide("clip", function() {			
+			$(this).remove();
+		});
+	});
+}
+
+function SetTweetContent(tweetJSON, newElement){
 	var tweetData = '';
 	tweetData = tweetJSON.tweetText;
 
@@ -154,20 +173,24 @@ function SetTweetElement(tweetJSON) {
 	if (tweetData)
 		tweetData = tweetData.parseURL().parseUsername().parseHashtag();
 
+	newElement.removeAttr("id");
+	newElement.find('.loading').hide();
 	newElement.find('p').html(tweetData);
 	newElement.find('.userName').html(("@" + tweetJSON.screenName).parseUsername());
 	newElement.find('.tweetTime').data("tTime", tweetJSON.tweetTime);
 	newElement.find('.tweetTime').html(ParseTweetTime(tweetJSON.tweetTime));
 	newElement.find('.profileImg').attr("src", tweetJSON.profileImage);
-	
+}
+
+function SetupImageBanner(tweetJSON, newElement, callback){
 	var src = tweetJSON.bannerImage;
 
 	var img = new Image();
 	img.onload = function() {
-		SetElementContent(this.src, newElement, oldElement);
+		SetSourceOfImage(this.src, newElement, callback);
 	};
 	img.onerror = function() {
-		SetElementContent(UseImageFromDefaultBannersCollection(), newElement, oldElement);
+		SetSourceOfImage(UseImageFromDefaultBannersCollection(), newElement, callback);
 	};
 
 	if (src)
@@ -176,16 +199,14 @@ function SetTweetElement(tweetJSON) {
 		img.src = UseImageFromDefaultBannersCollection();
 }
 
-function SetElementContent(imgSrc, newElement, oldElement) {
-	
+function SetSourceOfImage(imgSrc, newElement, callback) {	
 	$('.tweetTime').each(function(){
 		$(this).html(ParseTweetTime($(this).data("tTime")));
 	});
 	
 	newElement.find('.banner').attr("src", imgSrc);	
-	newElement.prependTo("article").hide().show("clip", function(){
-		oldElement.hide("clip", function() {			
-			$(this).remove();
-		});		
+	newElement.prependTo("article").hide().show("clip", function(){		
+		if(callback)
+			callback();		
 	});
 }
