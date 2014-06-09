@@ -1,5 +1,5 @@
 var imageIndex = 0;
-var IMAGE_COLLECTION_SIZE = 15;
+var IMAGE_COLLECTION_SIZE = 25;
 var TWEET_STACK_SIZE = 10;
 var imageArray = new Array(IMAGE_COLLECTION_SIZE);
 var tweetCollection = new Collection(TWEET_STACK_SIZE);
