@@ -5,7 +5,6 @@ function Collection(size){
 	
 	this.Add = function(item){		
 		if(this.stack.length == MAX_SIZE){
-			//console.log("Max size reached (" + this.stack.length + "), removing oldest item...");
 			this.stack.pop();			
 		}
 		this.stack.unshift(item);
@@ -23,4 +22,10 @@ function Collection(size){
 			return item;
 		return null;
 	};
+	
+	this.GetAllAsArray = function(){
+		return this.stack;
+	};
 }
+
+module.exports = Collection;

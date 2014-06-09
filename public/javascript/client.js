@@ -9,7 +9,7 @@ var timeoutPeriod = 8000;
 $(document).ready(function() {
 	SetStreamStatus("starting", "STARTING...");
 	PreloadBannerImages(function() {
-		var socket = SetupSocket();
+		SetupSocket();
 		ShowTweetsPerInterval();
 	});
 	
@@ -72,7 +72,17 @@ function SetupSocket() {
 	socket.on('connect', function() {
 		SetStreamStatus("online", "ONLINE");
 	});
-
+	
+	socket.on('latestTweets', function(data){
+		if(data.latestTweets){
+			alert(data.latestTweets.length);
+			SetupContentForInitialViewing(data.latestTweets);
+		}
+		else{
+			console.log("No tweets available for page landing.");
+		}
+	});
+	
 	socket.on('newTweet', function(data) {
 		if (data.tweetJSON) {
 			tweetCollection.Add(data);
