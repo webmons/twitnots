@@ -35,7 +35,7 @@ io.sockets.on('connection', function (socket) {
    	if(language === english){
 	   	var condensedJSON = {
 	   		tweetText: json.text,
-	   		tweetTime: new Date(json.created_at).getSeconds(),
+	   		tweetTime: new Date(json.created_at),
 	   		screenName: json.user.screen_name,
 	   		profileImage: json.user.profile_image_url,
 	   		bannerImage: json.user.profile_banner_url

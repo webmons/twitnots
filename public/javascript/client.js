@@ -83,10 +83,17 @@ function UseImageFromDefaultBannersCollection() {
 }
 
 function ParseTweetTime(tweetTime){
-	var time = new Date().getSeconds() - tweetTime;
+	if(!tweetTime)
+		return;
+		
+	var thenInSeconds = Date.parse(tweetTime) / 1000;
+	var nowInSeconds = Date.now() / 1000;
+		var time = nowInSeconds - thenInSeconds;
 	
 	if(time <= 0)
 		time = 1;
+	else
+		time = Math.round(time);
 	
 	return (time <= 1) ? time.toString() + " second ago" : time.toString() + " seconds ago";  
 }
@@ -97,7 +104,7 @@ function SetTweetElement(tweetJSON) {
 	var remove = $("section:gt(-2)");
 
 	// Clone
-	var tweetDiv = $(first).clone();
+	var tweetDiv = first.clone();
 
 	// Parse tweet data and set html
 	var newElement = tweetDiv;
@@ -111,6 +118,7 @@ function SetTweetElement(tweetJSON) {
 
 	newElement.find('p').html(tweetData);
 	newElement.find('.userName').html(("@" + tweetJSON.screenName).parseUsername());
+	newElement.find('.tweetTime').data("tTime", tweetJSON.tweetTime);
 	newElement.find('.tweetTime').html(ParseTweetTime(tweetJSON.tweetTime));
 	newElement.find('.profileImg').attr("src", tweetJSON.profileImage);
 	
@@ -131,9 +139,14 @@ function SetTweetElement(tweetJSON) {
 }
 
 function SetElementContent(imgSrc, newElement, oldElement) {
-	newElement.find('.banner').attr("src", imgSrc);
+	
+	$('.tweetTime').each(function(){
+		$(this).html(ParseTweetTime($(this).data("tTime")));
+	});
+	
+	newElement.find('.banner').attr("src", imgSrc);	
 	newElement.prependTo("article").hide().show("clip", function(){
-		oldElement.hide("clip", function() {
+		oldElement.hide("clip", function() {			
 			$(this).remove();
 		});		
 	});
